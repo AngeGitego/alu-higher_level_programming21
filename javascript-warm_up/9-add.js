@@ -1,7 +1,10 @@
 #!/usr/bin/node
+
+const Args = process.argv.slice(2);
+// prettier-ignore
 function add (a, b) {
-  const c = a + b;
-  console.log(c);
+  const result = parseInt(a) + parseInt(b);
+  console.log(result);
 }
 
-add(Number(process.argv[2]), Number(process.argv[3])
+add(Args[0], Args[1]);
