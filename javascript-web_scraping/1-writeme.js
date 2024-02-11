@@ -1,13 +1,11 @@
 #!/usr/bin/node
+const args = process.argv;
+const fileA = args[2];
+const fileB = args[3];
 const fs = require('fs');
 
-const filePath = process.argv[2];
-const content = process.argv[3];
-
-fs.writeFile(filePath, content, 'utf-8', (err) => {
-  if (err) {
-    console.error(err);
-    return;
-  }
-  console.log(`Content has been written to ${filePath}`);
-});
+try {
+  fs.writeFileSync(fileA, fileB, 'utf8');
+} catch (err) {
+  console.log(err);
+}
