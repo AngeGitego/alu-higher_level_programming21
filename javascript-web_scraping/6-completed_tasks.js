@@ -1,33 +1,23 @@
 #!/usr/bin/node
-
 const request = require('request');
+const args = process.argv;
 
-const apiUrl = process.argv[2];
-
-request(apiUrl, function (error, response, body) {
-  if (!error && response.statusCode === 200) {
-    try {
-      const todos = JSON.parse(body);
-
-      const completed = {};
-
-      todos.forEach((todo) => {
-        if (todo.completed) {
-          if (completed[todo.userId] === undefined) {
-            completed[todo.userId] = 1;
-          } else {
-            completed[todo.userId]++;
-          }
-        }
-      });
-
-      const output = `{${Object.entries(completed).map(([key, value]) => ` '${key}': ${value}`).join(',\n ')} }`;
-
-      console.log(Object.keys(completed).length > 2 ? output : completed);
-    } catch (parseError) {
-      console.error('Error parsing JSON:', parseError);
-    }
+request(args[2], function (error, response, body) {
+  if (error) {
+    console.log(error);
   } else {
-    console.error('Error:', error);
+    const data = JSON.parse(body);
+    const dictUs = {};
+    const lenData = data.length;
+    for (let i = 0; i < lenData; i++) {
+      const idNow = data[i].userId;
+      const complete = data[i].completed;
+      if (idNow in dictUs && complete === true) {
+        dictUs[idNow] += 1;
+      } else if (complete === true) {
+        dictUs[idNow] = 1;
+      }
+    }
+    console.log(dictUs);
   }
 });
